@@ -7,8 +7,8 @@ export default function configureStore(initialState) {
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for redux dev tools
 
   return createStore(
-    initialState,
     rootReducer,
+    initialState,
     composeEnhancers(applyMiddleware(reduxImmutableStateInvariant()))
   );
 }

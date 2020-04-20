@@ -1,4 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
+import * as courseActions from "../../Redux/actions/courseActions";
+import PropTypes from 'prop-types'
+
 class CoursesPages extends React.Component {
   state = {
     course: {
@@ -6,31 +10,16 @@ class CoursesPages extends React.Component {
     },
   };
 
-  //All of below are gone with the class fields
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     course: {
-  //       title: "",
-  //     },
-  //   };
-
-  //   //this.handleChange = this.handleChange.bind(this); //Constructor binding is better than inline binding
-  //   //which reduces the number of functions being created as result of multiple renders
-  //   //we won't re-allocate on each render
-  // }
-
   //Arrow functions inherit the binding context of their enclosing scope
   handleChange = (event) => {
-    //class field function: handles binding as well
     const course = { ...this.state.course, title: event.target.value };
-    this.setState({ course }); // this.setState({ course: course }); object short hand syntax
+    this.setState({ course });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    alert(this.state.course.title);
+    //dispatch is available in props as we left the mapDispatch method in connect method
+    this.props.dispatch(courseActions.createCourse(this.state.course));
   };
 
   render() {
@@ -44,9 +33,26 @@ class CoursesPages extends React.Component {
           onChange={this.handleChange} //bind the this of function to the this of the class
         />
         <input type="submit" value="Save" />
+
+        {this.props.courses.map(course=>(
+          <div key={course.title}>{course.title}</div>
+        ))}
       </form>
     );
   }
 }
 
-export default CoursesPages;
+CoursesPages.propTypes = {
+dispatch: PropTypes.func.isRequired,
+courses:PropTypes.array.isRequired
+}
+
+//function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
+  return {
+    courses: state.courses,
+  };
+}
+
+//export default connect(mapStateToProps, mapDispatchToProps)(CoursesPages);
+export default connect(mapStateToProps)(CoursesPages);
