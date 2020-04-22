@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import * as courseActions from "../../Redux/actions/courseActions";
 import PropTypes from 'prop-types'
-
+import {bindActionCreators} from 'redux';
 class CoursesPages extends React.Component {
   state = {
     course: {
@@ -20,7 +20,7 @@ class CoursesPages extends React.Component {
     event.preventDefault();
     //dispatch is available in props as we left the mapDispatch method in connect method
     //this.props.dispatch(courseActions.createCourse(this.state.course));
-    this.props.createCourse(this.state.course);
+    this.props.actions.createCourse(this.state.course);
   };
 
   render() {
@@ -44,7 +44,7 @@ class CoursesPages extends React.Component {
 }
 
 CoursesPages.propTypes = {
-createCourse: PropTypes.func.isRequired,
+actions: PropTypes.object.isRequired,
 courses:PropTypes.array.isRequired
 }
 
@@ -57,8 +57,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return{
-    createCourse: course => dispatch(courseActions.createCourse(course))
+    // createCourse: course => dispatch(courseActions.createCourse(course))
     //dispatch is the method that notifies the store about a new action
+    actions: bindActionCreators(courseActions,dispatch)
   }
 }
 
