@@ -19,7 +19,8 @@ class CoursesPages extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     //dispatch is available in props as we left the mapDispatch method in connect method
-    this.props.dispatch(courseActions.createCourse(this.state.course));
+    //this.props.dispatch(courseActions.createCourse(this.state.course));
+    this.props.createCourse(this.state.course);
   };
 
   render() {
@@ -43,7 +44,7 @@ class CoursesPages extends React.Component {
 }
 
 CoursesPages.propTypes = {
-dispatch: PropTypes.func.isRequired,
+createCourse: PropTypes.func.isRequired,
 courses:PropTypes.array.isRequired
 }
 
@@ -54,5 +55,11 @@ function mapStateToProps(state) {
   };
 }
 
-//export default connect(mapStateToProps, mapDispatchToProps)(CoursesPages);
-export default connect(mapStateToProps)(CoursesPages);
+function mapDispatchToProps(dispatch) {
+  return{
+    createCourse: course => dispatch(courseActions.createCourse(course))
+    //dispatch is the method that notifies the store about a new action
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesPages);
