@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import * as courseActions from "../../redux/actions/courseActions";
 import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux';
+import CourseList from './courseList';
+
 class CoursesPages extends React.Component {
   componentDidMount(){
     this.props.actions.loadCourses().catch(error=>{
@@ -14,9 +16,7 @@ class CoursesPages extends React.Component {
       //add a fragment to wrap the render, otherwise we will have two top level elements
       <Fragment>
         <h2>Courses</h2>
-        {this.props.courses.map(course=>(
-          <div key={course.title}>{course.title}</div>
-        ))}
+        <CourseList courses={this.props.courses}/>
         </Fragment>
     );
   }
