@@ -4,6 +4,11 @@ import * as courseActions from "../../redux/actions/courseActions";
 import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux';
 class CoursesPages extends React.Component {
+  componentDidMount(){
+    this.props.actions.loadCourses().catch(error=>{
+      alert("Loading courses failed:"+error)});
+  }
+
   render() {
     return (
       //add a fragment to wrap the render, otherwise we will have two top level elements
