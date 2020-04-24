@@ -1,32 +1,29 @@
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import * as courseActions from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorsActions";
 import PropTypes from "prop-types";
 
-class ManageCoursePages extends React.Component {
-  componentDidMount() {
-    const { courses, authors, loadAuthors, loadCourses } = this.props;
-
+function ManageCoursePages({ courses, authors, loadAuthors, loadCourses }) {
+  useEffect(() => {
     if (courses.length === 0) {
       loadCourses().catch((error) => {
         alert("Loading courses failed:" + error);
       });
     }
+
     if (authors.length === 0) {
       loadAuthors().catch((error) => {
         alert("Loading authors failed:" + error);
       });
     }
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <h2>Manage Course</h2>
-      </Fragment>
-    );
-  }
+  },[]);//without the second argument this method gets called on each render.
+  //
+  return (
+    <>
+      <h2>Manage Course</h2>
+    </>
+  );
 }
 
 ManageCoursePages.propTypes = {
