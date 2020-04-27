@@ -5,12 +5,12 @@ export function loadCoursesSuccess(courses) {
   return { type: types.LOAD_COURSES_SUCCESS, courses };
 }
 
-export function createCoursesSuccess(courses) {
-  return { type: types.CREATE_COURSE_SUCCESS, courses };
+export function createCoursesSuccess(course) {
+  return { type: types.CREATE_COURSE_SUCCESS, course };
 }
 
-export function updateCoursesSuccess(courses) {
-  return { type: types.UPDATE_COURSE_SUCCESS, courses };
+export function updateCoursesSuccess(course) {
+  return { type: types.UPDATE_COURSE_SUCCESS, course };
 }
 
 //first thunk, put thunks in the bottom of the actions

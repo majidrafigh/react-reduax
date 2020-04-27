@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {loadCourses, saveCourse} from "../../redux/actions/courseActions";
+import { loadCourses, saveCourse } from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorsActions";
 import PropTypes from "prop-types";
 import CourseForm from "./CourseForm";
 import { newCourse } from "../../../tools/mockData";
+import { getCourses } from "../../api/courseApi";
 
 function ManageCoursePages({
   courses,
@@ -41,13 +42,13 @@ function ManageCoursePages({
     }));
   }
 
-function handleSave(event) {
-  event.preventDefault();
-  saveCourse(course).then(() => {
-    debugger;
-    history.push("/courses");
-  });
-}
+  function handleSave(event) {
+    event.preventDefault();
+    saveCourse(course).then(() => {
+      debugger;
+      history.push("/courses");
+    });
+  }
 
   return (
     <CourseForm
@@ -70,11 +71,22 @@ ManageCoursePages.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    course: newCourse,
-    courses: state.courses,
+//function like this are called selectors as it selects something from state
+//this could be in reducer if we need to have access to it in other places
+// also for performance it can be memoize with libraries : reselect
+function getCourseBySlug(courses, slug) {
+  return courses.find((c) => c.slug === slug) || null;
+}
 
+function mapStateToProps(state, ownProps) {
+  const slug = ownProps.match.params.slug;
+  const course =
+    slug && state.courses.length > 0//the API call is async and courses might be empty
+      ? getCourseBySlug(state.courses, slug)
+      : newCourse;
+  return {
+    course,
+    courses: state.courses,
     authors: state.authors,
   };
 }
@@ -82,7 +94,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   loadCourses,
   saveCourse,
-  loadAuthors
+  loadAuthors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePages);
