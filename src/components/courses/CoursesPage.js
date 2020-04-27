@@ -5,8 +5,13 @@ import * as authorActions from "../../redux/actions/authorsActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CourseList from "./courseList";
+import { Redirect } from "react-router-dom";
 
 class CoursesPages extends React.Component {
+  state = {
+    redirectToAddCoursePage: false,
+  };
+
   componentDidMount() {
     const { courses, authors, actions } = this.props;
 
@@ -26,7 +31,15 @@ class CoursesPages extends React.Component {
     return (
       //add a fragment to wrap the render, otherwise we will have two top level elements
       <Fragment>
+        {this.state.redirectToAddCoursePage && <Redirect to="/course"/>}
         <h2>Courses</h2>
+        <button
+          style={{ marginBottom: 20 }}
+          className="btn btn-primary add-course"
+          onClick={() => this.setState({ redirectToAddCoursePage: true })}
+        >
+          Add Course
+        </button>
         <CourseList courses={this.props.courses} />
       </Fragment>
     );
