@@ -25,6 +25,8 @@ function ManageCoursePages({
       loadCourses().catch((error) => {
         alert("Loading courses failed:" + error);
       });
+    } else {
+      setCourse({ ...props.course });
     }
 
     if (authors.length === 0) {
@@ -32,7 +34,7 @@ function ManageCoursePages({
         alert("Loading authors failed:" + error);
       });
     }
-  }, []); //without the second argument this method gets called on each render.
+  }, [props.course]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -45,7 +47,6 @@ function ManageCoursePages({
   function handleSave(event) {
     event.preventDefault();
     saveCourse(course).then(() => {
-      debugger;
       history.push("/courses");
     });
   }
@@ -81,7 +82,7 @@ function getCourseBySlug(courses, slug) {
 function mapStateToProps(state, ownProps) {
   const slug = ownProps.match.params.slug;
   const course =
-    slug && state.courses.length > 0//the API call is async and courses might be empty
+    slug && state.courses.length > 0 //the API call is async and courses might be empty
       ? getCourseBySlug(state.courses, slug)
       : newCourse;
   return {
