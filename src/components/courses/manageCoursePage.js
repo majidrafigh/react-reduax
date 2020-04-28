@@ -20,6 +20,7 @@ function ManageCoursePages({
   //allows to have access to the rest of objects in props
   const [course, setCourse] = useState({ ...props.course }); //here we use useState instead of Redux to hold a state. Avoid using Redux for all state, use plain react state for data only one few components use: Ask who cares about this data
   const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (courses.length === 0) {
@@ -47,9 +48,11 @@ function ManageCoursePages({
 
   function handleSave(event) {
     event.preventDefault();
+    setSaving(true);
     saveCourse(course).then(() => {
       history.push("/courses");
     });
+    //no need to set saving to false as we navigate to the main page
   }
 
   return authors.length === 0 || courses.length === 0 ? (
@@ -61,6 +64,7 @@ function ManageCoursePages({
       authors={authors}
       onChange={handleChange}
       onSave={handleSave}
+      saving={saving}
     />
   );
 }
