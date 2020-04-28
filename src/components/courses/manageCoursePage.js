@@ -7,6 +7,7 @@ import CourseForm from "./CourseForm";
 import { newCourse } from "../../../tools/mockData";
 import { getCourses } from "../../api/courseApi";
 import Spinner from "../common/Spinner";
+import { toast } from "react-toastify";
 
 function ManageCoursePages({
   courses,
@@ -50,6 +51,7 @@ function ManageCoursePages({
     event.preventDefault();
     setSaving(true);
     saveCourse(course).then(() => {
+      toast.success("Course " + course.name + " saved");
       history.push("/courses");
     });
     //no need to set saving to false as we navigate to the main page
