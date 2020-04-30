@@ -5,7 +5,6 @@ import { loadAuthors } from "../../redux/actions/authorsActions";
 import PropTypes from "prop-types";
 import CourseForm from "./CourseForm";
 import { newCourse } from "../../../tools/mockData";
-import { getCourses } from "../../api/courseApi";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 
